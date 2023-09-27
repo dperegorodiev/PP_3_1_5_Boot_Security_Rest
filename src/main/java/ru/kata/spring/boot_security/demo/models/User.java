@@ -19,8 +19,6 @@ public class User implements UserDetails {
     private int age;
     private String password;
     private String username;
-    @Transient
-    private String passwordConfirm;
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Role> roles;
     public User(String name, String surname, int age) {
@@ -115,7 +113,13 @@ public class User implements UserDetails {
         this.username = username;
     }
 
+    public String getPasswordConfirm() {
+        return passwordConfirm;
+    }
+    @Transient
+    private String passwordConfirm;
     public void setPasswordConfirm(String passwordConfirm) {
         this.passwordConfirm = passwordConfirm;
     }
+
 }
