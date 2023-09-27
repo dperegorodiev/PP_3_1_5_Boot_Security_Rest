@@ -24,6 +24,14 @@ public class User {
 
     }
 
+    //    Связка таблиц
+//    @ManyToMany
+//    @JoinTable(name = "users_roles",
+//            joinColumns = @JoinColumn(name = "user_id"),
+//            inverseJoinColumns = @JoinColumn(name = "role_id"))
+//    private Collection<Role> roles;
+
+
     public Long getId() {
         return id;
     }
