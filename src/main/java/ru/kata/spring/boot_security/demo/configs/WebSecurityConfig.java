@@ -27,25 +27,28 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
 
-    @Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
+        http .csrf()
+                .disable()
                 .authorizeRequests()
-                .antMatchers("/", "/index").permitAll()
+                .antMatchers("/", "/index").not().fullyAuthenticated()
+                .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("/users/**").hasRole("USER")
+                .antMatchers("/", "/users/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .formLogin().successHandler(successUserHandler)
+                .formLogin()
+                .loginPage("/login")
+                .defaultSuccessUrl("/")
                 .permitAll()
                 .and()
                 .logout()
-                .permitAll();
+                .permitAll()
+                .logoutSuccessUrl("/");
     }
 
-    // аутентификация inMemory
+    // аутентификация inMemory исправил на userDetailsService
     @Bean
     @Override
     public UserDetailsService userDetailsService() {
