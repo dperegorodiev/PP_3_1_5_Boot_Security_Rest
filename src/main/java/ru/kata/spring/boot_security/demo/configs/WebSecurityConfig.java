@@ -29,13 +29,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http .csrf()
-                .disable()
+        http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/", "/index").not().fullyAuthenticated()
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/users/**").hasRole("USER")
                 .antMatchers("/", "/users/**").permitAll()
+                .antMatchers("/", "/index").not().fullyAuthenticated()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
@@ -58,11 +57,23 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         .password("user")
                         .roles("USER")
                         .build();
+        UserDetails admin =
+                User.withDefaultPasswordEncoder()
+                        .username("admin")
+                        .password("admin")
+                        .roles("ADMIN")
+                        .build();
 
         return new UserDetailsService() {
             @Override
             public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-                return user;
+                if (username.equals("user")) {
+                    return user;
+                } else if (username.equals("admin")) {
+                    return admin;
+                } else {
+                    throw new UsernameNotFoundException("Пользователь не найден");
+                }
             }
         };
     }
