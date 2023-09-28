@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="UTF-8">
     <title>Пользователи</title>
 </head>
 <body>
-<h1>Список пользователей</h1>
 
-<!-- Отображение списка пользователей -->
+<!-- Список пользователей -->
+<h1>Список пользователей</h1>
 <table>
     <tr>
         <th>Имя пользователя</th>
@@ -18,9 +19,9 @@
     </tr>
 </table>
 
-<!-- Форма для добавления нового пользователя -->
+<!-- Добавить пользователя -->
 <h2>Добавить пользователя</h2>
-<form th:object="${userForm}" th:action="@{/users}" method="post">
+<form action="/users" method="post" th:object="${userForm}">
     <div>
         <label for="username">Имя пользователя:</label>
         <input type="text" id="username" th:field="*{username}" />
@@ -29,24 +30,13 @@
         <label for="password">Пароль:</label>
         <input type="password" id="password" th:field="*{password}" />
     </div>
-    <div>
-        <label for="passwordConfirm">Подтверждение пароля:</label>
-        <input type="password" id="passwordConfirm" th:field="*{passwordConfirm}" />
-    </div>
+
     <div>
         <button type="submit">Добавить</button>
     </div>
 </form>
-
-<!-- Отображение ошибок -->
-<div th:if="${#fields.hasErrors('user')}">
-    <p th:errors="*{user}"></p>
-</div>
-<div th:if="${passwordError}">
-    <p th:text="${passwordError}"></p>
-</div>
-<div th:if="${usernameError}">
-    <p th:text="${usernameError}"></p>
-</div>
+<form th:action="@{logout}" method="post">
+    <input type="submit" value="logout" />
+</form>
 </body>
 </html>

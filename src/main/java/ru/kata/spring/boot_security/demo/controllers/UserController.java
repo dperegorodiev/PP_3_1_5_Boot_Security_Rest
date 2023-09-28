@@ -7,25 +7,27 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.services.UserService;
 
 import javax.naming.Binding;
 
 @Controller
+@RequestMapping("/users")
 public class UserController {
 
     @Autowired
     private UserService userService;
 
-    @GetMapping("/users")
+    @GetMapping
     public String user(Model model) {
         model.addAttribute("users", userService.getAllUsers());
         model.addAttribute("userForm", new User());
         return "users";
     }
 
-    @PostMapping("/users")
+    @PostMapping
     public String addUser(@ModelAttribute("user")User user, BindingResult bindingResult, Model model){
         if (bindingResult.hasErrors()) {
             return "users";
@@ -39,7 +41,6 @@ public class UserController {
             return "users";
         }
 
-        return "redirect:/";
+        return "redirect:/users";
     }
-
 }
