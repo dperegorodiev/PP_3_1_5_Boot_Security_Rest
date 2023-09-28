@@ -7,6 +7,20 @@
 <body>
 <h1>Пользователь у тебя есть своя страничка, радуйся!</h1>
 
-
+<h1>User</h1>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Surname</th>
+        <th>Age</th>
+    </tr>
+    <tr>
+        <td th:text="${user.id}"></td>
+        <td th:text="${user.name}"></td>
+        <td th:text="${user.surname}"></td>
+        <td th:text="${user.age}"></td>
+    </tr>
+</table>
 </body>
 </html>

@@ -8,5 +8,26 @@
 <h1>Страница админа</h1>
 <p>Если ты не админ, разраб накосячил<span th:text="${adminName}"></span>!</p>
 
+<h1>Edit User</h1>
+<form th:action="@{/users/{id}/edit(id=${user.id})}" method="post" th:object="${user}">>
+    <label for="name">Name:</label>
+    <input type="text" th:field="*{name}" id="name" name="name"  required><br><br>
+    <label for="surname">Surname:</label>
+    <input type="text" th:field="*{surname}" id="surname" name="surname"  required><br><br>
+    <label for="age">Age:</label>
+    <input type="number" th:field="*{age}" id="age" name="age"  required><br><br>
+    <input type="submit" value="Update User">
+</form>
+<h1>Add User</h1>
+<form action="/users/add" method="post" th:object="${user}">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" required><br><br>
+    <label for="surname">Surname:</label>
+    <input type="text" id="surname" name="surname" required><br><br>
+    <label for="age">Age:</label>
+    <input type="number" id="age" name="age" required><br><br>
+    <input type="submit" value="Add User">
+</form>
+
 </body>
 </html>

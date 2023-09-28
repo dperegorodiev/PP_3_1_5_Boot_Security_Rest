@@ -1,38 +1,64 @@
 package ru.kata.spring.boot_security.demo.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.services.UserService;
 
 @Controller
+@RequestMapping("/users")
 public class AdminController {
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
-    @GetMapping("/admin")
-    public String allUsers(Model model) {
-        model.addAttribute("allUsers", userService.allUsers());
-        return "admin";
+    public AdminController(UserService userService) {
+        this.userService = userService;
     }
 
-    @PostMapping("/admin")
-    public String deleteUsers(@RequestParam(required = true, defaultValue = "") Long userId,
-                              @RequestParam(required = true, defaultValue = "") String action,
-                              Model model) {
-        if (action.equals("delete")) {
-            userService.deleteUser(userId);
+    @GetMapping
+    public String getUsers(Model model) {
+        model.addAttribute("users", userService.getAllUsers());
+        return "users";
+    }
+
+    @GetMapping("/{id}")
+    public String getUserById(@PathVariable("id") Integer id, Model model) {
+        if (id != null) {
+            User user = userService.readUser(id);
+            model.addAttribute("user", user);
         }
-        return "redirect:/admin";
+        return "user";
     }
 
-    @GetMapping("/admin/gt/{userId}")
-    public String gtUser(@PathVariable("userId") Long userId, Model model) {
-        model.addAttribute("allUsers", userService.usergtList(userId));
-        return "admin";
+    @GetMapping ("/add")
+    public String addUserForm(Model model) {
+        model.addAttribute("user", new User());
+        return "add-user";
+    }
+
+    @PostMapping("/add")
+    public String addUser(@ModelAttribute("user") User user) {
+        userService.createUser(user);
+        return "redirect:/users";
+    }
+
+    @GetMapping("/{id}/edit")
+    public String editUserForm(@PathVariable("id") Integer id, Model model) {
+        User user = userService.readUser(id);
+        model.addAttribute("user", user);
+        return "edit-user";
+    }
+
+    @PostMapping("/{id}/edit")
+    public String editUser(@PathVariable("id") long id, @ModelAttribute("user") User user) {
+        user.setId(id);
+        userService.updateUser(user);
+        return "redirect:/users";
+    }
+    @GetMapping("/{id}/delete")
+    public String deleteUser(@PathVariable("id") Integer id) {
+        userService.deleteUser(id);
+        return "redirect:/users";
     }
 }
