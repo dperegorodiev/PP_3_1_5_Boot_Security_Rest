@@ -2,12 +2,13 @@ package ru.kata.spring.boot_security.demo.controllers;
 
 
 import org.springframework.stereotype.Controller;
+
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import ru.kata.spring.boot_security.demo.models.User;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import ru.kata.spring.boot_security.demo.services.UserService;
 
-import java.security.Principal;
+
 
 
 @Controller
@@ -19,5 +20,10 @@ public class UserController {
         this.userService = userService;
     }
 
+    @GetMapping("/user")
+    public String userInfo (Model model) {
+        model.addAttribute("user", userService.getAllUsers());
+        return "user";
+    }
 
 }
