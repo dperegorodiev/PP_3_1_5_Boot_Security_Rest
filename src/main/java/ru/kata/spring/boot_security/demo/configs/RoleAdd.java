@@ -18,8 +18,8 @@ public class RoleAdd implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
 
-        Role admin = new Role(1L, "ROLE_ADMIN");
-        Role users = new Role(2L, "ROLE_USER");
+        Role admin = new Role("ROLE_ADMIN");
+        Role users = new Role ("ROLE_USER");
 
         roleRepository.save(admin);
         roleRepository.save(users);

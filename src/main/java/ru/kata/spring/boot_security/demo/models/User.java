@@ -22,22 +22,61 @@ public class User implements UserDetails {
     private String username;
     private String password;
 
+    private String name;
+    private String surname;
+    private int age;
+
+
+    @ManyToMany(cascade=CascadeType.MERGE)
+    @JoinTable(
+            name="user_role",
+            joinColumns={@JoinColumn(name="user_id", referencedColumnName="id")},
+            inverseJoinColumns={@JoinColumn(name="role_id", referencedColumnName="id")})
     @Fetch(FetchMode.JOIN)
-    @ManyToMany
-    @JoinTable(name = "user_role",
-            joinColumns = @JoinColumn(name = "users_id"),
-            inverseJoinColumns = @JoinColumn(name = "roles_id"))
+
+//    @Fetch(FetchMode.JOIN)
+//    @ManyToMany
+//    @JoinTable(name = "user_role",
+//            joinColumns = @JoinColumn(name = "users_id"),
+//            inverseJoinColumns = @JoinColumn(name = "roles_id"))
 
     private Set<Role> roles;
 
-    public User(String username, String password) {
 
+    public User(String username, String password, String name, String surname, int age) {
         this.username = username;
         this.password = password;
+        this.name = name;
+        this.surname = surname;
+        this.age = age;
     }
 
     public User() {
 
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
     }
 
     public Long getId() {

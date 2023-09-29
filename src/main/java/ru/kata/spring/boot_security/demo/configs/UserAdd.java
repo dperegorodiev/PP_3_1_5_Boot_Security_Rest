@@ -18,8 +18,10 @@ public class UserAdd implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
 
-        User admin = new User("admin", "$2a$12$cUtcTNTxeqBmJA40rp7qL.8CblGxlG7EMK4cQuxz36OFiOS9WdFpS");
-        User user = new User("user", "$2a$12$OTdatQl9ezvtXHHesEH0y.mNvIW/FPbL332PM9dx5/Q4eNLY88fdS");
+        User admin = new User("admin", "$2a$12$cUtcTNTxeqBmJA40rp7qL.8CblGxlG7EMK4cQuxz36OFiOS9WdFpS",
+                "Dima", "Peregorодиев", 33);
+        User user = new User("user", "$2a$12$OTdatQl9ezvtXHHesEH0y.mNvIW/FPbL332PM9dx5/Q4eNLY88fdS",
+                "Ivan", "Ivanov", 18);
 
         userRepository.save(admin);
         userRepository.save(user);
