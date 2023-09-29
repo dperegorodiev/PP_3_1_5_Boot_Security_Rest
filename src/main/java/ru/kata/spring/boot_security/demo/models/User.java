@@ -6,7 +6,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -22,9 +24,10 @@ public class User implements UserDetails {
 
     @Fetch(FetchMode.JOIN)
     @ManyToMany
-    @JoinTable(name = "user_roles",
-            joinColumns = @JoinColumn(name="users_id"),
-            inverseJoinColumns = @JoinColumn(name="roles_id"))
+    @JoinTable(name = "user_role",
+            joinColumns = @JoinColumn(name = "users_id"),
+            inverseJoinColumns = @JoinColumn(name = "roles_id"))
+
     private Set<Role> roles;
 
     public User(String username, String password) {
@@ -70,6 +73,7 @@ public class User implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return getRoles();
     }
+
     public Set<Role> getRoles() {
         return roles;
     }
@@ -77,6 +81,7 @@ public class User implements UserDetails {
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
+
     @Override
     public String getPassword() {
         return password;
@@ -98,8 +103,10 @@ public class User implements UserDetails {
     public String getPasswordConfirm() {
         return passwordConfirm;
     }
+
     @Transient
     private String passwordConfirm;
+
     public void setPasswordConfirm(String passwordConfirm) {
         this.passwordConfirm = passwordConfirm;
     }
