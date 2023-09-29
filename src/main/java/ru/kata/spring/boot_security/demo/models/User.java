@@ -27,18 +27,11 @@ public class User implements UserDetails {
     private int age;
 
 
-    @ManyToMany(cascade=CascadeType.MERGE)
-    @JoinTable(
-            name="user_role",
-            joinColumns={@JoinColumn(name="user_id", referencedColumnName="id")},
-            inverseJoinColumns={@JoinColumn(name="role_id", referencedColumnName="id")})
     @Fetch(FetchMode.JOIN)
-
-//    @Fetch(FetchMode.JOIN)
-//    @ManyToMany
-//    @JoinTable(name = "user_role",
-//            joinColumns = @JoinColumn(name = "users_id"),
-//            inverseJoinColumns = @JoinColumn(name = "roles_id"))
+    @ManyToMany
+    @JoinTable(name = "user_role",
+            joinColumns = @JoinColumn(name = "users_id"),
+            inverseJoinColumns = @JoinColumn(name = "roles_id"))
 
     private Set<Role> roles;
 
