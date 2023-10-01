@@ -27,12 +27,6 @@ public class AdminController {
         return "admin";
     }
 
-    @GetMapping("/showUser")
-    public String showUser(Model model, Principal principal) {
-        model.addAttribute("user", userService.findByUsername(principal.getName()));
-        return "showUser";
-    }
-
     @GetMapping("/add")
     public String addUser (Model model) {
         model.addAttribute("user", new User ());

@@ -23,11 +23,10 @@ public class User implements UserDetails {
     @Size(min = 2, max = 100, message = "Имя должно быть от 2 до 50 символов длинной")
     private String username;
     @NotEmpty(message = "Почта не должна быть пустой")
-    @Column(name = "email")
+
     private String email;
 
     @NotEmpty(message = "Почта не должна быть пустой")
-    @Column(name = "password")
     private String password;
 
     @ManyToMany(fetch = FetchType.LAZY)
