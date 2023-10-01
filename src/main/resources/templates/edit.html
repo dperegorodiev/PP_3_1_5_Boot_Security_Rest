@@ -7,16 +7,18 @@
 </head>
 <body>
 
-<form  th:method="PATCH" th:action="@{/{id}(id=${user.getId()})}" th:object="${user}">
-    <label for="UserName">Name: </label>
-    <input type="text" th:field="*{username}" id="username"required><br><br>
-    <label for="email">Email: </label>
-    <input type="text" th:field="*{email}" id="email"required><br><br>
-    <label for="authorities">Authorities: </label>
-    <input type="text" th:field="*{authorities}" id="authorities"required><br><br>
-    <br/>
-    <input type="submit" value="Update"/>
+<form th:method="POST" th:action="@{/admin/{id}/edit(id=${user.id})}" th:object="${user}">
+    <input type="hidden" th:field="*{id}" />
+    <label for="username">Username:</label>
+    <input type="text" th:field="*{username}" id="username" required="required" />
+    <br />
+    <label for="email">Email:</label>
+    <input type="email" th:field="*{email}" id="email" required="required" />
+    <br />
+    <label for="password">Password:</label>
+    <input type="password" th:field="*{password}" id="password" required="required" />
 
+    <input type="submit" value="Update" />
 </form>
 <form style="color:green; font-family: fantasy" th:action="@{/logout}" th:method="POST">
     <input type="submit" value="Logout!"/>
