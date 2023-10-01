@@ -1,32 +1,31 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Администратор</title>
 </head>
 <body>
-<h1>Страница админа</h1>
-<p>Если ты не админ, разраб накосячил<span th:text="${adminName}"></span>!</p>
-
-<h1>Edit User</h1>
-<form th:action="@{/users/{id}/edit(id=${user.id})}" method="post" th:object="${user}">>
-    <label for="name">Name:</label>
-    <input type="text" th:field="*{name}" id="name" name="name"  required><br><br>
-    <label for="surname">Surname:</label>
-    <input type="text" th:field="*{surname}" id="surname" name="surname"  required><br><br>
-    <label for="age">Age:</label>
-    <input type="number" th:field="*{age}" id="age" name="age"  required><br><br>
-    <input type="submit" value="Update User">
-</form>
-<h1>Add User</h1>
-<form action="/users/add" method="post" th:object="${user}">
-    <label for="name">Name:</label>
-    <input type="text" id="name" name="name" required><br><br>
-    <label for="surname">Surname:</label>
-    <input type="text" id="surname" name="surname" required><br><br>
-    <label for="age">Age:</label>
-    <input type="number" id="age" name="age" required><br><br>
-    <input type="submit" value="Add User">
+<table border="1" cellpadding="5">
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Authorities</th>
+        <th>Action</th>
+    </tr>
+    <tr th:each="u : ${allUsers}">
+        <td th:utext="${u.getId()}"></td>
+        <td th:utext="${u.getUsername()}"></td>
+        <td th:utext="${u.getEmail()}"></td>
+        <td th:utext="${u.getAuthorities()}"></td>
+        <td>
+            <a th:href="@{/admin/{id}/edit(id=${u.getId()})}">Edit</a>
+            <a th:href="@{/admin/delete/{id}(id=${u.getId()})}">Delete</a>
+        </td>
+    </tr>
+</table>
+<form action="/logout" th:align="center">
+    <button type="submit">Logout</button>
 </form>
 
 </body>

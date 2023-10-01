@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import ru.kata.spring.boot_security.demo.services.UserService;
 
-
+import java.security.Principal;
 
 
 @Controller
@@ -21,8 +21,8 @@ public class UserController {
     }
 
     @GetMapping("/user")
-    public String userInfo (Model model) {
-        model.addAttribute("user", userService.getAllUsers());
+    public String showUser (Model model, Principal principal) {
+        model.addAttribute("user", userService.findByUsername(principal.getName()));
         return "user";
     }
 

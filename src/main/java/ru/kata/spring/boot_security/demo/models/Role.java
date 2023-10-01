@@ -8,13 +8,13 @@ import java.util.List;
 
 
 @Entity
-@Table(name = "roles")
+@Table(name = "role")
 public class Role implements GrantedAuthority {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    @Transient
+
     @ManyToMany(mappedBy = "roles")
 
     private List<User> users;
@@ -56,6 +56,10 @@ public class Role implements GrantedAuthority {
     @Override
     public String getAuthority() {
         return getName();
+    }
+    @Override
+    public String toString() {
+        return name;
     }
 
 }

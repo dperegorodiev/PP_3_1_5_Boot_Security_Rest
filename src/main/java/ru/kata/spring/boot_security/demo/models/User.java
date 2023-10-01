@@ -1,15 +1,16 @@
 package ru.kata.spring.boot_security.demo.models;
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.ArrayList;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
+
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
+
 
 @Entity
 @Table(name = "users")
@@ -18,58 +19,33 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @NotEmpty(message = "Имя не должно быть пустым")
+    @Size(min = 2, max = 100, message = "Имя должно быть от 2 до 50 символов длинной")
     private String username;
+    @NotEmpty(message = "Почта не должна быть пустой")
+    @Column(name = "email")
+    private String email;
+
+    @NotEmpty(message = "Почта не должна быть пустой")
+    @Column(name = "password")
     private String password;
 
-    private String name;
-    private String surname;
-    private int age;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "users_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private List<Role> roles;
 
-
-    @Fetch(FetchMode.JOIN)
-    @ManyToMany
-    @JoinTable(name = "user_role",
-            joinColumns = @JoinColumn(name = "users_id"),
-            inverseJoinColumns = @JoinColumn(name = "roles_id"))
-
-    private Set<Role> roles;
-
-
-    public User(String username, String password, String name, String surname, int age) {
-        this.username = username;
-        this.password = password;
-        this.name = name;
-        this.surname = surname;
-        this.age = age;
-    }
 
     public User() {
 
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
+    public User(String username,  String email, String password, List<Role> roles) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.roles = roles;
     }
 
     public Long getId() {
@@ -80,6 +56,56 @@ public class User implements UserDetails {
         this.id = id;
     }
 
+    @Override
+    public String getUsername() {
+        return username;
+    }
+
+
+
+
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", roles=" + roles +
+                '}';
+    }
 
     @Override
     public boolean isAccountNonExpired() {
@@ -95,52 +121,12 @@ public class User implements UserDetails {
     public boolean isCredentialsNonExpired() {
         return true;
     }
-
     @Override
     public boolean isEnabled() {
         return true;
     }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return getRoles();
-    }
-
-    public Set<Role> getRoles() {
         return roles;
     }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
-    }
-
-    @Override
-    public String getPassword() {
-        return password;
-    }
-
-    @Override
-    public String getUsername() {
-        return username;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPasswordConfirm() {
-        return passwordConfirm;
-    }
-
-    @Transient
-    private String passwordConfirm;
-
-    public void setPasswordConfirm(String passwordConfirm) {
-        this.passwordConfirm = passwordConfirm;
-    }
-
 }
