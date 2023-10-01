@@ -10,6 +10,7 @@ import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.repositories.RoleRepository;
 import ru.kata.spring.boot_security.demo.repositories.UserRepository;
 
+import java.util.List;
 import java.util.Set;
 
 @Component
@@ -28,26 +29,30 @@ public class UserAdd implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
         Role admin = new Role("ROLE_ADMIN");
-        Role user = new Role("ROLE_USER");
-
-//        User admin = new User("admin", "$2a$12$cUtcTNTxeqBmJA40rp7qL.8CblGxlG7EMK4cQuxz36OFiOS9WdFpS",
-//                "Dima", "Peregorodiev", 33);
-//        User User = new User("user", "$2a$12$OTdatQl9ezvtXHHesEH0y.mNvIW/FPbL332PM9dx5/Q4eNLY88fdS",
-//                "Ivan", "Ivanov", 18);
+        Role userRole = new Role("ROLE_USER");
 
         Set<Role> adminList = Set.of(admin);
-//        List<User>userList = List.of(user);
+        Set<Role> userList = Set.of(userRole);
 
         roleRepository.save(admin);
-        roleRepository.save(user);
+        roleRepository.save(userRole);
 
         User adminUser = new User();
         adminUser.setRoles(adminList);
-        adminUser.setPassword(passwordEncoder.encode("$2a$12$OTdatQl9ezvtXHHesEH0y.mNvIW/FPbL332PM9dx5/Q4eNLY88fdS"));
-        adminUser.setAge(30);
-        adminUser.setName("Ivan");
-        adminUser.setSurname("Ivanov");
-        adminUser.setUsername("user");
+        adminUser.setPassword(passwordEncoder.encode("$2a$12$cUtcTNTxeqBmJA40rp7qL.8CblGxlG7EMK4cQuxz36OFiOS9WdFpS"));
+        adminUser.setAge(33);
+        adminUser.setName("Dima");
+        adminUser.setSurname("Peregororodiev");
+        adminUser.setUsername("admin");
         userRepository.saveAndFlush(adminUser);
+
+        User user = new User();
+        user.setRoles(userList);
+        user.setPassword(passwordEncoder.encode("$2a$12$OTdatQl9ezvtXHHesEH0y.mNvIW/FPbL332PM9dx5/Q4eNLY88fdS"));
+        user.setAge(25);
+        user.setName("Inav");
+        user.setSurname("Ivamov");
+        user.setUsername("user");
+        userRepository.saveAndFlush(user);
     }
 }
