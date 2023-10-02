@@ -18,8 +18,9 @@
         <td th:text="${user.getAuthorities()}"></td>
     </tr>
 </table>
-<form style="color:green; font-family: fantasy" th:action="@{/logout}" th:method="POST">
+<form  th:action="@{/logout}" th:method="POST">
     <input type="submit" value="Logout!"/>
+</form>
 
 </form>
 </body>
