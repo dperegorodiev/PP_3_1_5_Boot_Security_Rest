@@ -8,15 +8,15 @@
 <body>
 
 <form th:method="POST" th:action="@{/admin/{id}/edit(id=${user.id})}" th:object="${user}">
-    <input type="hidden" th:field="*{id}" />
+
     <label for="username">Username:</label>
     <input type="text" th:field="*{username}" id="username" required="required" />
     <br />
     <label for="email">Email:</label>
     <input type="email" th:field="*{email}" id="email" required="required" />
-    <br />
-    <label for="password">Password:</label>
-    <input type="password" th:field="*{password}" id="password" required="required" />
+<!--    <br />-->
+<!--    <label for="password">Password:</label>-->
+<!--    <input type="password" th:field="*{password}" id="password" required="required" />-->
 
     <input type="submit" value="Update" />
 </form>

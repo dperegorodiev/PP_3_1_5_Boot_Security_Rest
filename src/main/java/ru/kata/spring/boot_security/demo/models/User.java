@@ -19,14 +19,10 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotEmpty(message = "Имя не должно быть пустым")
-    @Size(min = 2, max = 100, message = "Имя должно быть от 2 до 50 символов длинной")
+
+
     private String username;
-    @NotEmpty(message = "Почта не должна быть пустой")
-
     private String email;
-
-    @NotEmpty(message = "Почта не должна быть пустой")
     private String password;
 
     @ManyToMany(fetch = FetchType.LAZY)
