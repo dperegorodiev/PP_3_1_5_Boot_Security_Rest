@@ -2,12 +2,15 @@ package ru.kata.spring.boot_security.demo.models;
 
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 
 @Entity
@@ -27,18 +30,17 @@ public class User implements UserDetails {
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private List<Role> roles;
+    private Set<Role> roles;
 
 
     public User() {
 
     }
 
-    public User(String username,  String email, String password, List<Role> roles) {
+    public User(String username,  String email, String password) {
         this.username = username;
         this.email = email;
         this.password = password;
-        this.roles = roles;
     }
 
     public Long getId() {
@@ -81,23 +83,13 @@ public class User implements UserDetails {
         this.password = password;
     }
 
-    public List<Role> getRoles() {
+
+    public Set<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(List<Role> roles) {
+    public void setRoles(Set<Role> roles) {
         this.roles = roles;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", roles=" + roles +
-                '}';
     }
 
     @Override
@@ -120,6 +112,10 @@ public class User implements UserDetails {
     }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return roles;
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        for (Role role : roles) {
+            authorities.add(new SimpleGrantedAuthority(role.getName()));
+        }
+        return authorities;
     }
 }

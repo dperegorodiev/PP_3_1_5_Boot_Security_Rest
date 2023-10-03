@@ -11,21 +11,22 @@ import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.services.RoleService;
 import ru.kata.spring.boot_security.demo.services.UserService;
 
+
 import java.util.List;
 
 @Controller
 public class RegistrationController {
+    private final RoleService roleService;
     private final UserService userService;
 
-    private final RoleService roleService;
-
-    public RegistrationController(UserService userService, RoleService roleService) {
-        this.userService = userService;
+    public RegistrationController(RoleService roleService, UserService userService) {
         this.roleService = roleService;
+
+        this.userService = userService;
     }
     @GetMapping("/registration")
     public String registrationList(@ModelAttribute("user") User user, Model model){
-        List<Role> roles = roleService.getAllRoles();
+        List<Role> roles = roleService.allRoles();
         model.addAttribute("allRoles", roles);
         return "registration";
     }
@@ -33,18 +34,16 @@ public class RegistrationController {
 
     @PostMapping("/registration")
     public String userRegistration(@ModelAttribute("user") User user){
-
         userService.saveUser(user);
         return "redirect:/loginPage";
     }
 
     @GetMapping("/loginPage")
-    public String homePage(@RequestParam(value = "error", required = false) String error,
+    public String loginPage(@RequestParam(value = "error", required = false) String error,
                            @RequestParam(value = "logout", required = false) String logout,
                            Model model) {
         model.addAttribute("error", error!=null);
         model.addAttribute("logout", logout!=null);
-
         return "loginPage";
     }
 }

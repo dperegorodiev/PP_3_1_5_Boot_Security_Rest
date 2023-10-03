@@ -1,48 +1,44 @@
 package ru.kata.spring.boot_security.demo.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import ru.kata.spring.boot_security.demo.models.User;
 
 import ru.kata.spring.boot_security.demo.repositories.UserRepository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
+import java.util.LinkedList;
 import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
 
-    @PersistenceContext
-    private EntityManager em;
     private final UserRepository userRepository;
 
-    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, @Lazy PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
     }
-
+    @Transactional
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username);
+        User user = findByUsername(username);
         if(user == null)
             throw new UsernameNotFoundException("User not found");
-        return user;
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), user.getAuthorities());
     }
 
     public List<User> getAllUsers() {
-        return userRepository.findAll();
+        List<User> list = new LinkedList<>();
+        userRepository.findAll().forEach(list::add);
+        return list;
     }
 
     @Override
@@ -51,15 +47,19 @@ public class UserServiceImpl implements UserService {
     }
     @Override
     public User showUser(Long id) {
-        User user = userRepository.findById(id).orElse(null);
-        return user;
+        return userRepository.findById(id).orElse(null);
     }
-
-    @Override
     @Transactional
-    public void updateUser(User user) {
-
-        userRepository.save(user);
+    @Override
+    public void updateUser(Long id, User user) {
+        User existUser = userRepository.findById(id).get();
+        existUser.setUsername(user.getUsername());
+        existUser.setEmail(user.getEmail());
+        existUser.setRoles(user.getRoles());
+        if (!user.getPassword().isEmpty()) {
+            existUser.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+        }
+        userRepository.save(existUser);
     }
 
     @Transactional
@@ -72,7 +72,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public void saveUser(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         userRepository.save(user);
     }
 }
