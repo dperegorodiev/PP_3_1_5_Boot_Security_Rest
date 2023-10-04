@@ -56,10 +56,6 @@ public class User implements UserDetails {
         return username;
     }
 
-
-
-
-
     public void setUsername(String username) {
         this.username = username;
     }
@@ -71,8 +67,6 @@ public class User implements UserDetails {
     public void setEmail(String email) {
         this.email = email;
     }
-
-
 
     @Override
     public String getPassword() {

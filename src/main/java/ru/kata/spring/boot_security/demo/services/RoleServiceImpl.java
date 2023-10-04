@@ -20,4 +20,11 @@ public class RoleServiceImpl implements RoleService{
         roleRepository.findAll().forEach(list::add);
         return list;
     }
+
+    @Override
+    public List<Role> findAll() {
+        return roleRepository.findAll();
+    }
+
+
 }

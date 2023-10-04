@@ -8,31 +8,24 @@
 <body>
 <h3>Users add</h3>
 <hr>
-<form th:method="POST" th:action="@{/admin}" th:object="${user}">
+<form th:method="POST" th:action="@{admin/add}" th:object="${user}">
     <label for="name">Name </label>
-    <input type="text" th:field="*{username}" id="name"/>
+    <input type="text" th:field="*{username}" id="name"  >
     <br><br>
     <label for="name">Email </label>
-    <input type="text" th:field="*{email}" id="email"/>
+    <input type="text" th:field="*{email}" id="email" >
     <br><br>
     <label for="name">Password </label>
-    <input type="password" th:field="*{password}" id="password"/>
+    <input type="password" th:field="*{password}" id="password" >
     <br><br>
     <br>
     <input style="color:green; font-family: fantasy" type="submit" value="OK"/>
     <br>
-    <form th:action="@{/admin}" th:object="${user}" method="post">
-        <p>
-            <label>Roles:
-                <input type="checkbox" name="roles"
-                       th:each="role : ${allRoles}"
-                       th:text="${role.name+' '}"
-                       th:value="${role.id}"
-                       th:field="*{roles}"
-                />
-            </label>
-        </p>
-    </form>
+    <input type="checkbox" name="roles"
+           th:each="role : ${allRoles}"
+           th:text="${role.name}"
+           th:value="${role.id}"
+           th:field="*{roles}"/>
 </form>
 <br>
 <br>

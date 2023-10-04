@@ -18,6 +18,6 @@ public interface UserService extends UserDetailsService {
 
     void updateUser(Long id, User user);
 
-    void saveUser(User user);
+    void save(User user);
 
 }
