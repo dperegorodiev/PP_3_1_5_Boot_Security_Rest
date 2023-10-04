@@ -6,9 +6,7 @@
     <title>Change uZer</title>
 </head>
 <body>
-
 <form method="POST" th:action="@{/admin/{id}/edit(id=${user.getId})}" th:object="${user}">
-
     <label for="username">Username:</label>
     <input type="text" th:field="*{username}" id="username" required="required" />
     <br />
@@ -24,7 +22,6 @@
 </form>
 <form  th:action="@{/logout}" th:method="POST">
     <input type="submit" value="Logout!"/>
-</form>
 </form>
 </body>
 </html>
