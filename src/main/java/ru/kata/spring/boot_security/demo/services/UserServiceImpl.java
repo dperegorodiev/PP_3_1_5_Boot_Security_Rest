@@ -46,15 +46,23 @@ public class UserServiceImpl implements UserService {
         existUser.setRoles(user.getRoles());
         if (!user.getPassword().isEmpty()) {
             existUser.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+        } else {
+            existUser.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+            userRepository.save(existUser);
         }
+
         userRepository.save(existUser);
     }
     @Transactional
     @Override
-    public void deleteUserById(Long id) {
-        if (userRepository.findById(id).isPresent())
+    public boolean deleteUserById(Long id) {
+        if (userRepository.findById(id).isPresent()) {
             userRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
+
     @Transactional
     @Override
     public void save(User user) {
