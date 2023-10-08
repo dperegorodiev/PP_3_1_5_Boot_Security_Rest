@@ -7,6 +7,5 @@ import java.util.List;
 
 @Service
 public interface RoleService {
-    List<Role> allRoles();
     List<Role> findAll();
 }
