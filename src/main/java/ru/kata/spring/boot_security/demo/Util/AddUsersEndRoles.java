@@ -24,18 +24,22 @@ public class AddUsersEndRoles implements ApplicationRunner {
         roleRepository.saveAll(List.of(userRole, adminRole));
 
         User user = new User();
-        user.setUsername("user");
+        user.setFirstName("Ivan");
+        user.setLastName("Ivanov");
+        user.setAge(32);
         user.setPassword("user");
         user.setEmail("user@mail.ru");
         user.setRoles(Set.of(userRole));
 
         User admin = new User();
-        admin.setUsername("admin");
+        admin.setFirstName("Dima");
+        admin.setLastName("Peregorodiev");
+        admin.setAge(33);
         admin.setPassword("admin");
         admin.setEmail("admin@mail.ru");
         admin.setRoles(Set.of(adminRole, userRole));
 
-        userService.save(user);
-        userService.save(admin);
+        userService.saveUser(user);
+        userService.saveUser(admin);
     }
 }

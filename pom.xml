@@ -5,8 +5,8 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.6.2</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<version>2.7.7</version>
+		<relativePath/>
 	</parent>
 	<groupId>ru.kata</groupId>
 	<artifactId>spring-boot_security-demo</artifactId>
@@ -14,7 +14,7 @@
 	<name>spring-boot_security-demo</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
-		<java.version>11</java.version>
+		<java.version>17</java.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -29,6 +29,11 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.thymeleaf.extras</groupId>
+			<artifactId>thymeleaf-extras-springsecurity5</artifactId>
 		</dependency>
 
 
@@ -52,7 +57,7 @@
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>8.0.25</version>
+			<scope>runtime</scope>
 		</dependency>
 
 		<dependency>
@@ -64,6 +69,11 @@
 			<artifactId>spring-boot-devtools</artifactId>
 			<scope>runtime</scope><!-- -->
 			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.modelmapper</groupId>
+			<artifactId>modelmapper</artifactId>
+			<version>3.1.0</version>
 		</dependency>
 	</dependencies>
 

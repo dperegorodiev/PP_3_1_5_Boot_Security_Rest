@@ -1,72 +1,68 @@
 package ru.kata.spring.boot_security.demo.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.repositories.UserRepository;
-import javax.transaction.Transactional;
-import java.util.LinkedList;
+
 import java.util.List;
+import java.util.Optional;
 
 @Service
+@Transactional(readOnly = true)
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
-    public UserServiceImpl(UserRepository userRepository) {
+    private final PasswordEncoder passwordEncoder;
+
+
+    @Autowired
+    public UserServiceImpl(UserRepository userRepository, @Lazy PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
-    @Transactional
+
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = findByUsername(username);
-        if(user == null)
-            throw new UsernameNotFoundException("User not found");
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), user.getAuthorities());
+    public List<User> findAll() {
+        return userRepository.findAll();
     }
-    public List<User> getAllUsers() {
-        List<User> list = new LinkedList<>();
-        userRepository.findAll().forEach(list::add);
-        return list;
-    }
+
     @Override
-    public User findByUsername(String name) {
-        return userRepository.findByUsername(name);
-    }
-    @Override
-    public User showUser(Long id) {
+    public User findOne(int id) {
         return userRepository.findById(id).orElse(null);
     }
-    @Transactional
-    @Override
-    public void updateUser(Long id, User user) {
-        User existUser = userRepository.findById(id).get();
-        existUser.setUsername(user.getUsername());
-        existUser.setEmail(user.getEmail());
-        existUser.setRoles(user.getRoles());
-        if (!user.getPassword().isEmpty()) {
-            existUser.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-        } else {
-            existUser.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-            userRepository.save(existUser);
-        }
 
-        userRepository.save(existUser);
-    }
-    @Transactional
     @Override
-    public boolean deleteUserById(Long id) {
-        if (userRepository.findById(id).isPresent()) {
-            userRepository.deleteById(id);
-            return true;
-        }
-        return false;
-    }
-
     @Transactional
-    @Override
-    public void save(User user) {
-        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+    public void saveUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
+    }
+
+    @Override
+    @Transactional
+    public void update(int id, User updatedUser) {
+        updatedUser.setId(id);
+        updatedUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
+        userRepository.save(updatedUser);
+    }
+
+    @Override
+    @Transactional
+    public void deleteUser(int id) {
+        userRepository.deleteById(id);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Optional<User> user = userRepository.findByUserName(username);
+        if (user.isEmpty()) {
+            throw new UsernameNotFoundException("User not found!");
+        }
+        return user.get();
     }
 }

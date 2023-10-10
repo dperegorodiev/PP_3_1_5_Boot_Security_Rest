@@ -7,5 +7,11 @@ import java.util.List;
 
 @Service
 public interface RoleService {
-    List<Role> findAll();
+    List<Role> getAllUsers();
+
+    void save(Role role);
+
+    void deleteById(Integer id);
+
+    Role showUserById(Integer id);
 }
