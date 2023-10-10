@@ -51,7 +51,9 @@
                     <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Username</th>
+                        <th>FirstName</th>
+                        <th>LastName</th>
+                        <th>Age</th>
                         <th>Email</th>
                         <th>Role</th>
                     </tr>
@@ -59,7 +61,9 @@
                     <tbody>
                     <tr>
                         <td th:text="${user.getId()}"/>
-                        <td th:text="${user.getUsername()}"/>
+                        <td th:text="${user.getFirstName()}"/>
+                        <td th:text="${user.getLastName()}"/>
+                        <td th:text="${user.getAge()}"/>
                         <td th:text="${user.getEmail()}"/>
                         <td>
                             <span th:each="role : ${user.getRoles()}"
